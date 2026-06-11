@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1024" y2="1024" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FBBF24"/>
+      <stop offset="100%" stop-color="#EA580C"/>
+    </linearGradient>
+    <linearGradient id="fold" x1="698" y1="772" x2="782" y2="688" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#E8DACA"/>
+      <stop offset="100%" stop-color="#F0E4D4"/>
+    </linearGradient>
+    <filter id="shadow" x="-12%" y="-8%" width="130%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="18" flood-color="#7C2D12" flood-opacity="0.16"/>
+      <feDropShadow dx="0" dy="24" stdDeviation="40" flood-color="#7C2D12" flood-opacity="0.08"/>
+    </filter>
+  </defs>
+
+  <rect width="1024" height="1024" fill="url(#bg)"/>
+
+  <g filter="url(#shadow)">
+    <path d="
+      M 290 232
+      H 734
+      Q 782 232 782 280
+      V 688
+      L 698 772
+      H 290
+      Q 242 772 242 724
+      V 280
+      Q 242 232 290 232
+      Z
+    " fill="#FFFFFF"/>
+
+    <path d="M 698 772 L 782 688 V 772 Z" fill="#000" opacity="0.03"/>
+
+    <path d="
+      M 698 772
+      C 698 728 738 688 782 688
+      V 772
+      Z
+    " fill="url(#fold)"/>
+  </g>
+</svg>

@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 432 432" width="432" height="432">
+  <!-- Sticky note outline (stroke, not filled) -->
+  <path d="
+    M 108 94
+    H 316
+    Q 330 94 330 108
+    V 298
+    L 292 336
+    H 108
+    Q 94 336 94 322
+    V 108
+    Q 94 94 108 94
+    Z
+  " fill="none" stroke="#000" stroke-width="16"/>
+
+  <!-- Fold detail -->
+  <path d="
+    M 292 336
+    C 292 316 312 298 330 298
+  " fill="none" stroke="#000" stroke-width="12"/>
+
+  <!-- Text lines to make it recognizable as a note -->
+  <line x1="130" y1="160" x2="280" y2="160" stroke="#000" stroke-width="12" stroke-linecap="round"/>
+  <line x1="130" y1="200" x2="260" y2="200" stroke="#000" stroke-width="12" stroke-linecap="round"/>
+  <line x1="130" y1="240" x2="230" y2="240" stroke="#000" stroke-width="12" stroke-linecap="round"/>
+</svg>

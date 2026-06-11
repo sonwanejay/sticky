@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 432 432" width="432" height="432">
+  <defs>
+    <linearGradient id="fold" x1="292" y1="336" x2="330" y2="298" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#E8DACA"/>
+      <stop offset="100%" stop-color="#F0E4D4"/>
+    </linearGradient>
+    <filter id="shadow" x="-12%" y="-8%" width="130%" height="140%">
+      <feDropShadow dx="0" dy="3" stdDeviation="7" flood-color="#7C2D12" flood-opacity="0.16"/>
+      <feDropShadow dx="0" dy="10" stdDeviation="16" flood-color="#7C2D12" flood-opacity="0.08"/>
+    </filter>
+  </defs>
+
+  <g filter="url(#shadow)">
+    <path d="
+      M 108 94
+      H 316
+      Q 330 94 330 108
+      V 298
+      L 292 336
+      H 108
+      Q 94 336 94 322
+      V 108
+      Q 94 94 108 94
+      Z
+    " fill="#FFFFFF"/>
+
+    <path d="M 292 336 L 330 298 V 336 Z" fill="#000" opacity="0.03"/>
+
+    <path d="
+      M 292 336
+      C 292 316 312 298 330 298
+      V 336
+      Z
+    " fill="url(#fold)"/>
+  </g>
+</svg>
