@@ -58,8 +58,8 @@ function buildNoteWidget(
         height: "wrap_content",
         width: "match_parent",
         backgroundColor: colors.bg,
-        borderRadius: 16,
-        padding: 16,
+        borderRadius: 12,
+        padding: 12,
         flexDirection: "column",
       }}
       clickAction={hasNote ? "OPEN_URI" : "OPEN_APP"}
@@ -68,7 +68,7 @@ function buildNoteWidget(
       <TextWidget
         text={title}
         style={{
-          fontSize: 16,
+          fontSize: 14,
           fontWeight: "bold",
           color: colors.text,
         }}
@@ -79,11 +79,11 @@ function buildNoteWidget(
         <TextWidget
           text={preview}
           style={{
-            fontSize: 13,
+            fontSize: 12,
             color: colors.secondary,
-            marginTop: 6,
+            marginTop: 4,
           }}
-          maxLines={5}
+          maxLines={3}
           truncate="END"
         />
       ) : null}
