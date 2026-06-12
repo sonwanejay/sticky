@@ -116,13 +116,24 @@ export default function NoteList() {
   }
 
   function renderPinnedGrid(data: NoteMeta[]) {
-    return data.map((item) => (
-      <NoteCard
-        key={item.id}
-        note={item}
-        onPress={() => router.push(`/note/${item.id}`)}
-        onLongPress={() => handleDelete(item)}
-      />
+    const rows: NoteMeta[][] = [];
+    for (let i = 0; i < data.length; i += 2) {
+      rows.push(data.slice(i, i + 2));
+    }
+    return rows.map((row) => (
+      <View key={row[0].id} className="flex-row gap-2.5">
+        {row.map((item) => (
+          <View key={item.id} className="flex-1">
+            <NoteCard
+              note={item}
+              onPress={() => router.push(`/note/${item.id}`)}
+              onLongPress={() => handleDelete(item)}
+              compact
+            />
+          </View>
+        ))}
+        {row.length === 1 && <View className="flex-1" />}
+      </View>
     ));
   }
 

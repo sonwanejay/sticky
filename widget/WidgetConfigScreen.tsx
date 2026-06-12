@@ -57,14 +57,16 @@ export function WidgetConfigScreen({
 
   return (
     <View style={[styles.container, { backgroundColor: colors.paper }]}>
-      <View style={styles.header}>
+      <View style={[styles.header, { borderBottomColor: colors.border.DEFAULT }]}>
         <Text style={[styles.title, { color: colors.ink.DEFAULT }]}>
           Choose a note
         </Text>
         <Pressable onPress={() => setResult("cancel")} hitSlop={12}>
-          <Text style={[styles.cancel, { color: colors.ink.muted }]}>
-            Cancel
-          </Text>
+          <View style={[styles.cancelBtn, { backgroundColor: colors.card.muted, borderColor: colors.border.DEFAULT }]}>
+            <Text style={[styles.cancelText, { color: colors.ink.secondary }]}>
+              Cancel
+            </Text>
+          </View>
         </Pressable>
       </View>
 
@@ -80,40 +82,44 @@ export function WidgetConfigScreen({
           keyExtractor={(item) => item.noteId}
           contentContainerStyle={styles.list}
           renderItem={({ item }) => (
-            <Pressable
-              onPress={() => selectNote(item)}
-              style={({ pressed }) => [
-                styles.noteRow,
-                {
-                  backgroundColor: getNoteBg(item.color),
-                  borderColor: colors.border.DEFAULT,
-                  opacity: pressed ? 0.85 : 1,
-                },
-              ]}
-            >
-              <Text
-                style={[
-                  styles.noteTitle,
-                  { color: getNoteTextColor(item.color) },
-                ]}
-                numberOfLines={1}
-              >
-                {item.title}
-              </Text>
-              {item.preview ? (
-                <Text
+            <Pressable onPress={() => selectNote(item)}>
+              {({ pressed }) => (
+                <View
                   style={[
-                    styles.notePreview,
+                    styles.noteRow,
                     {
-                      color: getNoteTextColor(item.color),
-                      opacity: 0.7,
+                      backgroundColor: getNoteBg(item.color),
+                      borderColor: colors.border.DEFAULT,
+                      opacity: pressed ? 0.8 : 1,
+                      transform: [{ scale: pressed ? 0.98 : 1 }],
                     },
                   ]}
-                  numberOfLines={2}
                 >
-                  {item.preview}
-                </Text>
-              ) : null}
+                  <Text
+                    style={[
+                      styles.noteTitle,
+                      { color: getNoteTextColor(item.color) },
+                    ]}
+                    numberOfLines={1}
+                  >
+                    {item.title}
+                  </Text>
+                  {item.preview ? (
+                    <Text
+                      style={[
+                        styles.notePreview,
+                        {
+                          color: getNoteTextColor(item.color),
+                          opacity: 0.7,
+                        },
+                      ]}
+                      numberOfLines={2}
+                    >
+                      {item.preview}
+                    </Text>
+                  ) : null}
+                </View>
+              )}
             </Pressable>
           )}
         />
@@ -133,24 +139,37 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingTop: 56,
     paddingBottom: 16,
+    borderBottomWidth: 1,
   },
   title: {
     fontSize: 22,
     fontWeight: "700",
   },
-  cancel: {
-    fontSize: 15,
+  cancelBtn: {
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 8,
+    borderWidth: 1,
+  },
+  cancelText: {
+    fontSize: 14,
     fontWeight: "500",
   },
   list: {
     paddingHorizontal: 16,
+    paddingTop: 12,
     paddingBottom: 32,
   },
   noteRow: {
-    borderRadius: 12,
+    borderRadius: 14,
     borderWidth: 1,
     padding: 16,
     marginBottom: 10,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.06,
+    shadowRadius: 3,
+    elevation: 2,
   },
   noteTitle: {
     fontSize: 16,
@@ -158,7 +177,7 @@ const styles = StyleSheet.create({
   },
   notePreview: {
     fontSize: 13,
-    marginTop: 4,
+    marginTop: 5,
     lineHeight: 18,
   },
   empty: {

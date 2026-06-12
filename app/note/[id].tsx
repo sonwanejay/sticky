@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { router, Stack, useLocalSearchParams } from "expo-router";
 import * as Haptics from "expo-haptics";
-import { readNote, saveNote, getNoteMeta, deleteNote } from "@/lib/storage";
+import { readNote, saveNote, getNoteMeta, deleteNote, updateNoteMeta } from "@/lib/storage";
 import { getColorConfig } from "@/lib/colors";
 import { useThemeColors } from "@/lib/useThemeColors";
 import ColorPicker from "@/components/ColorPicker";
@@ -78,7 +78,9 @@ export default function NoteEditor() {
 
   function togglePin() {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-    setPinned(!pinned);
+    const newPinned = !pinned;
+    setPinned(newPinned);
+    updateNoteMeta(id, { pinned: newPinned });
   }
 
   return (

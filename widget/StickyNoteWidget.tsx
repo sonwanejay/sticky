@@ -40,13 +40,15 @@ function resolveColors(hex: string | undefined, isDark: boolean) {
   };
 }
 
-function NoteWidgetContent({
-  noteId,
-  title,
-  preview,
-  color,
-  isDark,
-}: StickyNoteWidgetProps & { isDark: boolean }) {
+// Not a React component — called as a plain function to avoid
+// React Compiler injecting hooks (crashes in headless tasks)
+function buildNoteWidget(
+  noteId: string,
+  title: string,
+  preview: string | undefined,
+  color: string | undefined,
+  isDark: boolean
+) {
   const colors = resolveColors(color, isDark);
   const hasNote = noteId !== "";
 
@@ -102,7 +104,7 @@ export function StickyNoteWidget(
   props: StickyNoteWidgetProps
 ): { light: React.JSX.Element; dark: React.JSX.Element } {
   return {
-    light: <NoteWidgetContent {...props} isDark={false} />,
-    dark: <NoteWidgetContent {...props} isDark={true} />,
+    light: buildNoteWidget(props.noteId, props.title, props.preview, props.color, false),
+    dark: buildNoteWidget(props.noteId, props.title, props.preview, props.color, true),
   };
 }
