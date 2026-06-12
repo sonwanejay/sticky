@@ -69,7 +69,7 @@ export default function NoteCard({
                 opacity: note.color ? 0.7 : 0.85,
               }}
               className="text-[13px] mt-1.5 leading-[18px]"
-              numberOfLines={compact ? 4 : 3}
+              numberOfLines={compact ? 8 : 3}
             >
               {note.preview}
             </Text>

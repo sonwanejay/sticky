@@ -93,48 +93,40 @@ export default function NoteList() {
     );
   }
 
-  function renderGrid(data: NoteMeta[]) {
-    const rows: NoteMeta[][] = [];
-    for (let i = 0; i < data.length; i += 2) {
-      rows.push(data.slice(i, i + 2));
-    }
-    return rows.map((row) => (
-      <View key={row[0].id} className="flex-row gap-2.5">
-        {row.map((item) => (
-          <View key={item.id} className="flex-1">
-            <NoteCard
-              note={item}
-              onPress={() => router.push(`/note/${item.id}`)}
-              onLongPress={() => handleDelete(item)}
-              compact
-            />
-          </View>
-        ))}
-        {row.length === 1 && <View className="flex-1" />}
-      </View>
-    ));
-  }
+  function renderMasonry(data: NoteMeta[]) {
+    const left: NoteMeta[] = [];
+    const right: NoteMeta[] = [];
+    data.forEach((item, i) => {
+      if (i % 2 === 0) left.push(item);
+      else right.push(item);
+    });
 
-  function renderPinnedGrid(data: NoteMeta[]) {
-    const rows: NoteMeta[][] = [];
-    for (let i = 0; i < data.length; i += 2) {
-      rows.push(data.slice(i, i + 2));
-    }
-    return rows.map((row) => (
-      <View key={row[0].id} className="flex-row gap-2.5">
-        {row.map((item) => (
-          <View key={item.id} className="flex-1">
+    return (
+      <View style={{ flexDirection: "row", gap: 10, alignItems: "flex-start" }}>
+        <View style={{ flex: 1 }}>
+          {left.map((item) => (
             <NoteCard
+              key={item.id}
               note={item}
               onPress={() => router.push(`/note/${item.id}`)}
               onLongPress={() => handleDelete(item)}
               compact
             />
-          </View>
-        ))}
-        {row.length === 1 && <View className="flex-1" />}
+          ))}
+        </View>
+        <View style={{ flex: 1 }}>
+          {right.map((item) => (
+            <NoteCard
+              key={item.id}
+              note={item}
+              onPress={() => router.push(`/note/${item.id}`)}
+              onLongPress={() => handleDelete(item)}
+              compact
+            />
+          ))}
+        </View>
       </View>
-    ));
+    );
   }
 
   function renderList(data: NoteMeta[]) {
@@ -192,14 +184,14 @@ export default function NoteList() {
                   <>
                     {renderSectionHeader("Pinned")}
                     {viewMode === "grid"
-                      ? renderPinnedGrid(pinnedNotes)
+                      ? renderMasonry(pinnedNotes)
                       : renderList(pinnedNotes)}
                     {unpinnedNotes.length > 0 &&
                       renderSectionHeader("Others")}
                   </>
                 )}
                 {viewMode === "grid"
-                  ? renderGrid(unpinnedNotes)
+                  ? renderMasonry(unpinnedNotes)
                   : renderList(unpinnedNotes)}
               </View>
             )}

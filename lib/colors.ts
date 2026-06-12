@@ -7,24 +7,31 @@ export type ColorOption = {
 };
 
 export const PASTEL_COLORS: ColorOption[] = [
-  { name: "Cream", value: "#FFF8E1", textColor: "#4E3B00" },
-  { name: "Rose", value: "#FCE4EC", textColor: "#4A0E1C" },
-  { name: "Sky", value: "#E3F2FD", textColor: "#0D2744" },
-  { name: "Mint", value: "#E8F5E9", textColor: "#1B3A1D" },
-  { name: "Lavender", value: "#F3E5F5", textColor: "#3A1047" },
-  { name: "Peach", value: "#FFF3E0", textColor: "#4E2A00" },
+  { name: "Parchment", value: "#F5ECD7", textColor: "#5C4425" },
+  { name: "Blush", value: "#F0D5CF", textColor: "#6B3530" },
+  { name: "Sage", value: "#D8E4CF", textColor: "#304228" },
+  { name: "Fog", value: "#D5DBE5", textColor: "#2C3A48" },
+  { name: "Mauve", value: "#DDD2E0", textColor: "#3E2D4A" },
+  { name: "Sand", value: "#EAD9C0", textColor: "#5A3F1B" },
 ];
 
 export const BOLD_COLORS: ColorOption[] = [
-  { name: "Coral", value: "#EF5350", textColor: "#FFFFFF" },
-  { name: "Ocean", value: "#42A5F5", textColor: "#FFFFFF" },
-  { name: "Sage", value: "#66BB6A", textColor: "#FFFFFF" },
-  { name: "Amber", value: "#FFA726", textColor: "#FFFFFF" },
-  { name: "Plum", value: "#AB47BC", textColor: "#FFFFFF" },
-  { name: "Teal", value: "#26A69A", textColor: "#FFFFFF" },
+  { name: "Terracotta", value: "#C2784E", textColor: "#FFFFFF" },
+  { name: "Olive", value: "#6B7F4A", textColor: "#FFFFFF" },
+  { name: "Rust", value: "#A85A42", textColor: "#FFFFFF" },
+  { name: "Dusk", value: "#7A6E63", textColor: "#FFFFFF" },
+  { name: "Forest", value: "#4D7C62", textColor: "#FFFFFF" },
+  { name: "Wine", value: "#8E5060", textColor: "#FFFFFF" },
 ];
 
 export const ALL_COLORS = [...PASTEL_COLORS, ...BOLD_COLORS];
+
+function isLightColor(hex: string): boolean {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  return (0.299 * r + 0.587 * g + 0.114 * b) / 255 > 0.5;
+}
 
 type ThemeColors = typeof light;
 
@@ -52,10 +59,11 @@ export function getColorConfig(
       secondaryTextColor: found.textColor,
       pinColor: found.textColor,
     };
+  const isLight = isLightColor(hex);
   return {
     bg: hex,
-    textColor: colors.ink.DEFAULT,
-    secondaryTextColor: colors.ink.secondary,
-    pinColor: colors.ink.muted,
+    textColor: isLight ? colors.ink.DEFAULT : "#FFFFFF",
+    secondaryTextColor: isLight ? colors.ink.secondary : "#FFFFFFCC",
+    pinColor: isLight ? colors.ink.muted : "#FFFFFF99",
   };
 }

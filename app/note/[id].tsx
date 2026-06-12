@@ -24,6 +24,11 @@ export default function NoteEditor() {
   const [pinned, setPinned] = useState(false);
   const loaded = useRef(false);
   const titleRef = useRef<TextInput>(null);
+  const latestTitle = useRef("");
+  const latestContent = useRef("");
+
+  latestTitle.current = title;
+  latestContent.current = content;
 
   useEffect(() => {
     readNote(id).then((text) => {
@@ -49,11 +54,20 @@ export default function NoteEditor() {
   useEffect(() => {
     if (!loaded.current) return;
     const timeout = setTimeout(() => {
+      if (!title.trim() && !content.trim()) return;
       const fullContent = `# ${title}\n\n${content}`;
       saveNote(id, title || "Untitled", fullContent, { color, pinned });
     }, 500);
     return () => clearTimeout(timeout);
   }, [title, content, id, color, pinned]);
+
+  useEffect(() => {
+    return () => {
+      if (!latestTitle.current.trim() && !latestContent.current.trim()) {
+        deleteNote(id).catch(() => {});
+      }
+    };
+  }, [id]);
 
   const { bg: colorBg, textColor, pinColor } = getColorConfig(color, colors);
   const bg = color ? colorBg : colors.card.DEFAULT;
