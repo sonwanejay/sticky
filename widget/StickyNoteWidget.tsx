@@ -55,7 +55,7 @@ function buildNoteWidget(
   return (
     <FlexWidget
       style={{
-        height: "match_parent",
+        height: "wrap_content",
         width: "match_parent",
         backgroundColor: colors.bg,
         borderRadius: 16,
@@ -87,15 +87,6 @@ function buildNoteWidget(
           truncate="END"
         />
       ) : null}
-      <FlexWidget style={{ flex: 1 }} />
-      <TextWidget
-        text="Sticky"
-        style={{
-          fontSize: 10,
-          color: colors.muted,
-          marginTop: 8,
-        }}
-      />
     </FlexWidget>
   );
 }
