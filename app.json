@@ -16,8 +16,7 @@
       "adaptiveIcon": {
         "backgroundColor": "#FBBF24",
         "foregroundImage": "./assets/images/android-icon-foreground.png",
-        "backgroundImage": "./assets/images/android-icon-background.png",
-        "monochromeImage": "./assets/images/android-icon-monochrome.png"
+        "backgroundImage": "./assets/images/android-icon-background.png"
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
@@ -40,6 +39,25 @@
           "dark": {
             "backgroundColor": "#B45309"
           }
+        }
+      ],
+      [
+        "react-native-android-widget",
+        {
+          "widgets": [
+            {
+              "name": "StickyNoteWidget",
+              "label": "Sticky Note",
+              "description": "Pin a note to your home screen",
+              "minWidth": "200dp",
+              "minHeight": "110dp",
+              "targetCellWidth": 3,
+              "targetCellHeight": 2,
+              "resizeMode": "horizontal|vertical",
+              "widgetFeatures": "reconfigurable",
+              "updatePeriodMillis": 1800000
+            }
+          ]
         }
       ]
     ],

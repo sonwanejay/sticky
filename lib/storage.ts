@@ -1,5 +1,6 @@
 import { File, Directory, Paths } from "expo-file-system";
 import { updateWidget } from "./widget";
+import { removeWidgetsByNoteId } from "./widget-data";
 
 const notesDir = new Directory(Paths.document, "notes");
 const indexFile = new File(notesDir, "index.json");
@@ -114,6 +115,7 @@ export async function deleteNote(id: string) {
   if (file.exists) {
     file.delete();
   }
+  removeWidgetsByNoteId(id).catch(() => {});
   updateWidget();
 }
 
