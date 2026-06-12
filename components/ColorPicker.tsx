@@ -1,7 +1,7 @@
 import { Pressable, ScrollView, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import * as Haptics from "expo-haptics";
-import { PASTEL_COLORS, BOLD_COLORS } from "@/lib/colors";
+import { PASTEL_COLORS, EARTH_COLORS, DEEP_COLORS } from "@/lib/colors";
 import { useThemeColors } from "@/lib/useThemeColors";
 
 type ColorPickerProps = {
@@ -61,7 +61,20 @@ export default function ColorPicker({
 
       <View style={{ backgroundColor: colors.border.DEFAULT }} className="w-px h-6 mx-1" />
 
-      {BOLD_COLORS.map((color) => (
+      {EARTH_COLORS.map((color) => (
+        <Swatch
+          key={color.value}
+          hex={color.value}
+          textColor={color.textColor}
+          isSelected={selectedColor === color.value}
+          accentColor={colors.accent.DEFAULT}
+          onPress={() => select(color.value)}
+        />
+      ))}
+
+      <View style={{ backgroundColor: colors.border.DEFAULT }} className="w-px h-6 mx-1" />
+
+      {DEEP_COLORS.map((color) => (
         <Swatch
           key={color.value}
           hex={color.value}

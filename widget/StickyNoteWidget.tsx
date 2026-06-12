@@ -55,38 +55,46 @@ function buildNoteWidget(
   return (
     <FlexWidget
       style={{
-        height: "wrap_content",
+        height: "match_parent",
         width: "match_parent",
-        backgroundColor: colors.bg,
-        borderRadius: 12,
-        padding: 12,
-        flexDirection: "column",
+        padding: 2,
       }}
-      clickAction={hasNote ? "OPEN_URI" : "OPEN_APP"}
-      clickActionData={hasNote ? { uri: `sticky://note/${noteId}` } : {}}
     >
-      <TextWidget
-        text={title}
+      <FlexWidget
         style={{
-          fontSize: 14,
-          fontWeight: "bold",
-          color: colors.text,
+          height: "match_parent",
+          width: "match_parent",
+          backgroundColor: colors.bg,
+          borderRadius: 12,
+          padding: 12,
+          flexDirection: "column",
         }}
-        maxLines={2}
-        truncate="END"
-      />
-      {preview ? (
+        clickAction={hasNote ? "OPEN_URI" : "OPEN_APP"}
+        clickActionData={hasNote ? { uri: `sticky://note/${noteId}` } : {}}
+      >
         <TextWidget
-          text={preview}
+          text={title}
           style={{
-            fontSize: 12,
-            color: colors.secondary,
-            marginTop: 4,
+            fontSize: 14,
+            fontWeight: "bold",
+            color: colors.text,
           }}
-          maxLines={3}
+          maxLines={2}
           truncate="END"
         />
-      ) : null}
+        {preview ? (
+          <TextWidget
+            text={preview}
+            style={{
+              fontSize: 12,
+              color: colors.secondary,
+              marginTop: 4,
+            }}
+            maxLines={3}
+            truncate="END"
+          />
+        ) : null}
+      </FlexWidget>
     </FlexWidget>
   );
 }
