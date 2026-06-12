@@ -13,10 +13,7 @@
       "bundleIdentifier": "com.anonymous.sticky"
     },
     "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/images/icon.png",
-        "backgroundColor": "#FBBF24"
-      },
+      "icon": "./assets/images/icon.png",
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
       "package": "com.anonymous.sticky"

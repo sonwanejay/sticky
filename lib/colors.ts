@@ -26,6 +26,17 @@ export const EARTH_COLORS: ColorOption[] = [
   { name: "Dusk", value: "#7A6E63", textColor: "#FFFFFF" },
 ];
 
+export const BRIGHT_COLORS: ColorOption[] = [
+  { name: "Sunflower", value: "#FBBF24", textColor: "#5C4A1B" },
+  { name: "Tangerine", value: "#FB923C", textColor: "#FFFFFF" },
+  { name: "Coral", value: "#F87171", textColor: "#FFFFFF" },
+  { name: "Hot Pink", value: "#EC4899", textColor: "#FFFFFF" },
+  { name: "Violet", value: "#8B5CF6", textColor: "#FFFFFF" },
+  { name: "Sky", value: "#38BDF8", textColor: "#FFFFFF" },
+  { name: "Emerald", value: "#34D399", textColor: "#1E4D35" },
+  { name: "Lime", value: "#A3E635", textColor: "#304228" },
+];
+
 export const DEEP_COLORS: ColorOption[] = [
   { name: "Dusty Rose", value: "#B56576", textColor: "#FFFFFF" },
   { name: "Wine", value: "#8E5060", textColor: "#FFFFFF" },
@@ -35,7 +46,7 @@ export const DEEP_COLORS: ColorOption[] = [
   { name: "Charcoal", value: "#4A4543", textColor: "#FFFFFF" },
 ];
 
-export const ALL_COLORS = [...PASTEL_COLORS, ...EARTH_COLORS, ...DEEP_COLORS];
+export const ALL_COLORS = [...PASTEL_COLORS, ...BRIGHT_COLORS, ...EARTH_COLORS, ...DEEP_COLORS];
 
 function isLightColor(hex: string): boolean {
   const r = parseInt(hex.slice(1, 3), 16);

@@ -201,12 +201,7 @@ export default function NoteList() {
         <Pressable
           onPress={handleCreate}
           style={{
-            backgroundColor: colors.accent.DEFAULT,
-            shadowColor: colors.accent.DEFAULT,
-            shadowOffset: { width: 0, height: 4 },
-            shadowOpacity: 0.3,
-            shadowRadius: 12,
-            elevation: 8,
+            backgroundColor: "#F59E0B",
           }}
           className="absolute bottom-8 right-6 w-14 h-14 rounded-2xl items-center justify-center"
         >
