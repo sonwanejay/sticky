@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sticky – Store Assets</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: #E8E8E8;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+    padding: 40px;
+    justify-content: center;
+  }
+  .asset-label {
+    text-align: center;
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+  .ms { font-family: 'Material Symbols Rounded'; font-style: normal; font-weight: normal; -webkit-font-smoothing: antialiased; }
+  .ms-fill { font-variation-settings: 'FILL' 1; }
+
+  /* ── Feature Graphic ── */
+  .feature-graphic {
+    width: 1024px; height: 500px;
+    background: linear-gradient(135deg, #F7B733 0%, #F59E0B 35%, #D97706 70%, #B45309 100%);
+    position: relative;
+    overflow: hidden;
+    border-radius: 4px;
+  }
+  .feature-graphic .bg-shapes {
+    position: absolute; inset: 0;
+  }
+  .feature-graphic .bg-shapes .circle {
+    position: absolute; border-radius: 50%;
+  }
+  .feature-graphic .bg-shapes .circle:nth-child(1) {
+    width: 600px; height: 600px; top: -200px; right: -100px;
+    background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
+  }
+  .feature-graphic .bg-shapes .circle:nth-child(2) {
+    width: 400px; height: 400px; bottom: -150px; left: -80px;
+    background: radial-gradient(circle, rgba(255,255,255,0.06) 0%, transparent 70%);
+  }
+  .feature-graphic .content {
+    position: relative; z-index: 2;
+    display: flex; align-items: center; justify-content: center;
+    height: 100%; padding: 0 80px; gap: 56px;
+  }
+  .feature-graphic .app-icon {
+    width: 200px; height: 200px; border-radius: 44px;
+    background: linear-gradient(135deg, #F7B733, #E8890C);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.25), 0 4px 12px rgba(0,0,0,0.15);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; position: relative; overflow: hidden;
+  }
+  .feature-graphic .app-icon .note {
+    width: 130px; height: 130px; background: #fff; border-radius: 18px;
+    position: relative;
+  }
+  .feature-graphic .app-icon .note .fold {
+    position: absolute; bottom: 0; right: 0;
+    width: 32px; height: 32px;
+    background: radial-gradient(circle at top left, transparent 60%, rgba(0,0,0,0.06) 60%);
+    border-top-left-radius: 10px;
+  }
+  .feature-graphic .text-area {
+    display: flex; flex-direction: column; gap: 12px;
+  }
+  .feature-graphic .text-area h1 {
+    font-size: 72px; font-weight: 700; color: #fff;
+    letter-spacing: -2px; line-height: 1;
+    text-shadow: 0 2px 20px rgba(0,0,0,0.15);
+  }
+  .feature-graphic .text-area p {
+    font-size: 26px; font-weight: 400; color: rgba(255,255,255,0.85);
+    letter-spacing: -0.3px;
+  }
+
+  /* ── Phone Frame ── */
+  .phone-wrap { display: flex; flex-direction: column; align-items: center; }
+  .phone {
+    width: 393px; height: 852px;
+    border-radius: 40px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.15), 0 0 0 1px rgba(0,0,0,0.08);
+  }
+  .phone .screen { width: 100%; height: 100%; position: relative; overflow-y: auto; overflow-x: hidden; }
+  .phone .screen::-webkit-scrollbar { display: none; }
+
+  /* ── Status Bar ── */
+  .status-bar {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 14px 28px 0; height: 54px; position: sticky; top: 0; z-index: 100;
+  }
+  .status-bar .time { font-size: 15px; font-weight: 600; letter-spacing: -0.3px; }
+  .status-bar .icons { display: flex; gap: 6px; align-items: center; }
+  .status-bar .icons .bar { height: 11px; border-radius: 2px; }
+  .status-bar .signal { width: 16px; display: flex; gap: 1.5px; align-items: flex-end; height: 11px; }
+  .status-bar .signal span { width: 3px; border-radius: 1px; }
+  .status-bar .battery { width: 24px; height: 11px; border-radius: 2.5px; border: 1.5px solid; position: relative; }
+  .status-bar .battery::after { content: ''; position: absolute; right: -4px; top: 2.5px; width: 2px; height: 5px; border-radius: 0 1px 1px 0; }
+
+  /* Light status bar */
+  .light .status-bar { background: #fff; }
+  .light .status-bar .time { color: #1C1917; }
+  .light .status-bar .signal span { background: #1C1917; }
+  .light .status-bar .battery { border-color: #1C1917; }
+  .light .status-bar .battery::after { background: #1C1917; }
+
+  /* Dark status bar */
+  .dark .status-bar { background: #1A1A1A; }
+  .dark .status-bar .time { color: #EDEBE8; }
+  .dark .status-bar .signal span { background: #EDEBE8; }
+  .dark .status-bar .battery { border-color: #EDEBE8; }
+  .dark .status-bar .battery::after { background: #EDEBE8; }
+
+  /* ── Search Bar ── */
+  .search-row {
+    display: flex; align-items: center; padding: 4px 16px 12px; gap: 8px;
+  }
+  .search-bar {
+    flex: 1; display: flex; align-items: center; gap: 10px;
+    border-radius: 9999px; padding: 10px 16px;
+  }
+  .light .search-bar { background: #F7F7F7; border: 1px solid #E5E5E5; }
+  .dark .search-bar { background: #111111; border: 1px solid #2A2A2A; }
+  .search-bar .placeholder { font-size: 14px; }
+  .light .search-bar .placeholder { color: #A8A29E; }
+  .dark .search-bar .placeholder { color: #6B6560; }
+  .search-bar .search-icon { font-size: 18px; }
+  .light .search-bar .search-icon { color: #A8A29E; }
+  .dark .search-bar .search-icon { color: #6B6560; }
+  .view-toggle {
+    width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;
+  }
+  .light .view-toggle .ms { color: #57534E; }
+  .dark .view-toggle .ms { color: #A8A29E; }
+
+  /* ── Section Headers ── */
+  .section-header {
+    font-size: 11px; font-weight: 700; letter-spacing: 1.5px;
+    text-transform: uppercase; padding: 16px 4px 8px;
+  }
+  .light .section-header { color: #A8A29E; }
+  .dark .section-header { color: #6B6560; }
+
+  /* ── Note Cards ── */
+  .masonry { display: flex; gap: 10px; padding: 0 16px; }
+  .masonry-col { flex: 1; display: flex; flex-direction: column; gap: 10px; }
+
+  .note-card {
+    border-radius: 12px; padding: 14px; position: relative;
+    border: 1px solid transparent;
+  }
+  .note-card .card-title {
+    font-size: 15px; font-weight: 600; letter-spacing: -0.3px;
+    line-height: 1.3; margin-bottom: 6px;
+  }
+  .note-card .card-preview {
+    font-size: 13px; line-height: 18px; margin-bottom: 8px;
+    opacity: 0.78;
+  }
+  .note-card .card-time {
+    font-size: 11px; font-weight: 500; opacity: 0.55;
+  }
+  .note-card .pin-icon {
+    position: absolute; top: 12px; right: 12px;
+    font-size: 12px; opacity: 0.6;
+  }
+
+  /* Default card (no color, light) */
+  .light .note-card.default { background: #F7F7F7; border-color: #E5E5E5; }
+  .light .note-card.default .card-title { color: #1C1917; }
+  .light .note-card.default .card-preview { color: #57534E; }
+  .light .note-card.default .card-time { color: #57534E; }
+
+  /* Default card (no color, dark) */
+  .dark .note-card.default { background: #111111; border-color: #2A2A2A; }
+  .dark .note-card.default .card-title { color: #EDEBE8; }
+  .dark .note-card.default .card-preview { color: #A8A29E; }
+  .dark .note-card.default .card-time { color: #A8A29E; }
+
+  /* ── FAB ── */
+  .fab {
+    position: absolute; bottom: 32px; right: 24px;
+    width: 56px; height: 56px; border-radius: 16px;
+    background: #F59E0B; display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 16px rgba(245,158,11,0.4);
+    z-index: 50;
+  }
+  .fab .ms { color: #fff; font-size: 28px; }
+
+  /* ── Notes Content Area ── */
+  .notes-content { padding-bottom: 100px; }
+
+  /* ── Editor Screen ── */
+  .editor-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 8px 0 4px; height: 48px;
+  }
+  .editor-header .back { display: flex; align-items: center; gap: 4px; font-size: 16px; }
+  .editor-header .actions { display: flex; gap: 4px; }
+  .editor-header .action-btn {
+    width: 36px; height: 36px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .editor-body { padding: 8px 24px; flex: 1; }
+  .editor-body .editor-title {
+    font-size: 26px; font-weight: 700; letter-spacing: -0.5px;
+    margin-bottom: 16px; border: none; outline: none; width: 100%;
+    background: transparent;
+  }
+  .editor-body .editor-content {
+    font-size: 16px; line-height: 28px; white-space: pre-wrap;
+  }
+
+  /* ── Color Picker Strip ── */
+  .color-picker-strip {
+    border-top: 1px solid;
+    padding: 16px 20px;
+    display: flex; align-items: center; gap: 12px;
+    position: absolute; bottom: 0; left: 0; right: 0;
+    overflow-x: auto;
+  }
+  .color-picker-strip::-webkit-scrollbar { display: none; }
+  .swatch {
+    width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0;
+    position: relative; display: flex; align-items: center; justify-content: center;
+  }
+  .swatch.selected::before {
+    content: ''; position: absolute;
+    width: 44px; height: 44px; border-radius: 50%;
+    border: 2px solid #C2710C; top: -4px; left: -4px;
+  }
+  .swatch .check { font-size: 16px; }
+  .color-divider {
+    width: 1px; height: 24px; flex-shrink: 0; margin: 0 4px;
+  }
+  .light .color-divider { background: #E5E5E5; }
+  .dark .color-divider { background: #2A2A2A; }
+  .light .color-picker-strip { background: #fff; border-color: #E5E5E5; }
+  .dark .color-picker-strip { background: #1A1A1A; border-color: #2A2A2A; }
+
+  /* ── Widget Screen ── */
+  .widget-wallpaper {
+    background: linear-gradient(160deg, #1a1128 0%, #2a1f3d 30%, #1e2a4a 60%, #162030 100%);
+  }
+  .widget-area { padding: 16px 20px; display: flex; flex-direction: column; gap: 14px; }
+  .widget-card {
+    border-radius: 20px; padding: 16px 20px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+  }
+  .widget-card .widget-label {
+    font-size: 11px; font-weight: 500; opacity: 0.6; margin-bottom: 4px;
+  }
+  .widget-card .widget-title {
+    font-size: 18px; font-weight: 700; letter-spacing: -0.3px; margin-bottom: 8px;
+  }
+  .widget-card .widget-line {
+    font-size: 14px; line-height: 22px;
+  }
+  .widget-card .widget-time {
+    font-size: 11px; opacity: 0.5; margin-top: 8px; font-weight: 500;
+  }
+
+  /* Home row icons */
+  .home-dock {
+    position: absolute; bottom: 24px; left: 0; right: 0;
+    display: flex; justify-content: center; gap: 24px; padding: 0 40px;
+  }
+  .dock-icon {
+    width: 52px; height: 52px; border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .dock-icon .ms { color: rgba(255,255,255,0.9); font-size: 24px; }
+
+  /* ── Tablet Frames ── */
+  .tablet-wrap { display: flex; flex-direction: column; align-items: center; }
+  .tablet-7 {
+    width: 600px; height: 960px;
+    border-radius: 24px; overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.15), 0 0 0 1px rgba(0,0,0,0.08);
+  }
+  .tablet-10 {
+    width: 800px; height: 1280px;
+    border-radius: 24px; overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.15), 0 0 0 1px rgba(0,0,0,0.08);
+  }
+  .tablet-7 .screen, .tablet-10 .screen { width: 100%; height: 100%; position: relative; overflow-y: auto; overflow-x: hidden; }
+  .tablet-7 .screen::-webkit-scrollbar, .tablet-10 .screen::-webkit-scrollbar { display: none; }
+  .tablet-7 .masonry, .tablet-10 .masonry { padding: 0 24px; gap: 14px; }
+  .tablet-7 .masonry-col, .tablet-10 .masonry-col { gap: 14px; }
+  .tablet-7 .search-row, .tablet-10 .search-row { padding: 4px 24px 16px; }
+  .tablet-7 .section-header, .tablet-10 .section-header { padding-left: 12px; }
+  .tablet-7 .note-card, .tablet-10 .note-card { padding: 18px; }
+  .tablet-7 .note-card .card-title, .tablet-10 .note-card .card-title { font-size: 17px; }
+  .tablet-7 .note-card .card-preview, .tablet-10 .note-card .card-preview { font-size: 14px; line-height: 20px; }
+  .tablet-10 .masonry { display: flex; }
+  .tablet-10 .masonry-col { flex: 1; }
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- FEATURE GRAPHIC (1024 × 500)               -->
+<!-- ════════════════════════════════════════════ -->
+<div>
+  <div class="asset-label">Feature Graphic — 1024 × 500</div>
+  <div class="feature-graphic" id="feature-graphic">
+    <div class="bg-shapes">
+      <div class="circle"></div>
+      <div class="circle"></div>
+    </div>
+    <div class="content">
+      <div class="app-icon">
+        <div class="note"><div class="fold"></div></div>
+      </div>
+      <div class="text-area">
+        <h1>Sticky</h1>
+        <p>Notes on your home screen</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- PHONE SCREENSHOT 1: Light Mode Grid         -->
+<!-- ════════════════════════════════════════════ -->
+<div class="phone-wrap">
+  <div class="asset-label">Phone Screenshot 1 — Light Mode</div>
+  <div class="phone" id="phone-1">
+    <div class="screen light" style="background: #FFFFFF;">
+      <!-- Status Bar -->
+      <div class="status-bar">
+        <span class="time">9:41</span>
+        <div class="icons">
+          <div class="signal">
+            <span style="height:4px"></span><span style="height:6px"></span><span style="height:8px"></span><span style="height:11px"></span>
+          </div>
+          <div class="battery"><div style="position:absolute;left:2px;top:2px;right:3px;bottom:2px;border-radius:1px;background:#1C1917;"></div></div>
+        </div>
+      </div>
+
+      <!-- Search Row -->
+      <div class="search-row">
+        <div class="search-bar">
+          <span class="ms search-icon">search</span>
+          <span class="placeholder">Search notes...</span>
+        </div>
+        <div class="view-toggle">
+          <span class="ms" style="font-size:24px;">menu</span>
+        </div>
+      </div>
+
+      <div class="notes-content">
+        <!-- Pinned -->
+        <div style="padding: 0 16px;">
+          <div class="section-header">Pinned</div>
+        </div>
+        <div class="masonry">
+          <div class="masonry-col">
+            <div class="note-card" style="background:#FDF6B2; border-color: #5C4A1B18;">
+              <span class="ms ms-fill pin-icon" style="color:#5C4A1B;">push_pin</span>
+              <div class="card-title" style="color:#5C4A1B;">Project Ideas</div>
+              <div class="card-preview" style="color:#5C4A1B;">Build a habit tracker app<br>Weather dashboard<br>Recipe organizer with AI</div>
+              <div class="card-time" style="color:#5C4A1B;">2h ago</div>
+            </div>
+            <div class="note-card" style="background:#C9E8D8; border-color: #1E4D3518;">
+              <div class="card-title" style="color:#1E4D35;">Shopping List</div>
+              <div class="card-preview" style="color:#1E4D35;">Milk, eggs, bread<br>Avocados, tomatoes<br>Pasta sauce, olive oil</div>
+              <div class="card-time" style="color:#1E4D35;">5h ago</div>
+            </div>
+            <div class="note-card" style="background:#FB923C; border-color: #FFFFFF18;">
+              <div class="card-title" style="color:#FFFFFF;">Workout Plan</div>
+              <div class="card-preview" style="color:#FFFFFF;">Mon: Upper body<br>Tue: Cardio 30min<br>Wed: Lower body<br>Thu: Rest day</div>
+              <div class="card-time" style="color:#FFFFFF;">1d ago</div>
+            </div>
+            <div class="note-card" style="background:#B56576; border-color: #FFFFFF18;">
+              <div class="card-title" style="color:#FFFFFF;">Daily Journal</div>
+              <div class="card-preview" style="color:#FFFFFF;">Today was productive.<br>Finished the app design.<br>Need to prep for Friday.</div>
+              <div class="card-time" style="color:#FFFFFF;">3d ago</div>
+            </div>
+          </div>
+          <div class="masonry-col">
+            <div class="note-card" style="background:#DDD2EE; border-color: #3E2A5C18;">
+              <span class="ms ms-fill pin-icon" style="color:#3E2A5C;">push_pin</span>
+              <div class="card-title" style="color:#3E2A5C;">Meeting Notes</div>
+              <div class="card-preview" style="color:#3E2A5C;">Discuss Q3 roadmap<br>Review design mockups<br>Action items for team</div>
+              <div class="card-time" style="color:#3E2A5C;">30m ago</div>
+            </div>
+            <div class="note-card" style="background:#F0D5CF; border-color: #6B353018;">
+              <div class="card-title" style="color:#6B3530;">Book List</div>
+              <div class="card-preview" style="color:#6B3530;">Atomic Habits<br>The Psychology of Money<br>Deep Work by Cal Newport</div>
+              <div class="card-time" style="color:#6B3530;">3h ago</div>
+            </div>
+            <div class="note-card" style="background:#38BDF8; border-color: #FFFFFF18;">
+              <div class="card-title" style="color:#FFFFFF;">Travel Plans</div>
+              <div class="card-preview" style="color:#FFFFFF;">Tokyo — April<br>Flight: check prices<br>Hotel near Shinjuku<br>Book rail pass</div>
+              <div class="card-time" style="color:#FFFFFF;">2d ago</div>
+            </div>
+            <div class="note-card default">
+              <div class="card-title">Quick Notes</div>
+              <div class="card-preview">Call dentist tomorrow<br>Renew subscription</div>
+              <div class="card-time">4d ago</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FAB -->
+      <div class="fab"><span class="ms">add</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- PHONE SCREENSHOT 2: Note Editor + Colors    -->
+<!-- ════════════════════════════════════════════ -->
+<div class="phone-wrap">
+  <div class="asset-label">Phone Screenshot 2 — Editor + Color Picker</div>
+  <div class="phone" id="phone-2">
+    <div class="screen light" style="background: #FDF6B2;">
+      <!-- Status Bar -->
+      <div class="status-bar" style="background: #FDF6B2;">
+        <span class="time" style="color:#5C4A1B;">9:41</span>
+        <div class="icons">
+          <div class="signal">
+            <span style="height:4px;background:#5C4A1B"></span><span style="height:6px;background:#5C4A1B"></span><span style="height:8px;background:#5C4A1B"></span><span style="height:11px;background:#5C4A1B"></span>
+          </div>
+          <div class="battery" style="border-color:#5C4A1B;"><div style="position:absolute;left:2px;top:2px;right:3px;bottom:2px;border-radius:1px;background:#5C4A1B;"></div></div>
+        </div>
+      </div>
+
+      <!-- Editor Header -->
+      <div class="editor-header" style="padding: 0 16px;">
+        <div class="back" style="color:#5C4A1B;">
+          <span class="ms" style="font-size:24px;">arrow_back_ios</span>
+        </div>
+        <div class="actions">
+          <div class="action-btn" style="background: #FFF7ED;">
+            <span class="ms ms-fill" style="color:#C2710C; font-size:20px;">push_pin</span>
+          </div>
+          <div class="action-btn">
+            <span class="ms" style="color:#5C4A1B99; font-size:20px;">delete_outline</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Editor Body -->
+      <div class="editor-body">
+        <div class="editor-title" style="color:#5C4A1B;">Morning Routine</div>
+        <div class="editor-content" style="color:#5C4A1B;">Wake up at 6:00 AM
+10 min meditation session
+Quick stretch &amp; exercise
+Healthy breakfast — oats + fruit
+Review today's goals and priorities
+Start with the hardest task first
+
+Remember: consistency beats
+intensity every single time.
+
+Evening wind-down:
+Read for 20 minutes
+Journal — 3 things I'm grateful for
+Lights out by 10:30 PM</div>
+      </div>
+
+      <!-- Color Picker -->
+      <div class="color-picker-strip" style="background:#FDF6B2; border-color: #5C4A1B20;">
+        <!-- None -->
+        <div class="swatch" style="background:#F7F7F7; border: 1px solid #E5E5E5;"></div>
+        <!-- Pastels -->
+        <div class="swatch" style="background:#F5ECD7;"></div>
+        <div class="swatch selected" style="background:#FDF6B2;">
+          <span class="ms check" style="color:#5C4A1B;">check</span>
+        </div>
+        <div class="swatch" style="background:#FDDCB5;"></div>
+        <div class="swatch" style="background:#F0D5CF;"></div>
+        <div class="swatch" style="background:#DDD2EE;"></div>
+        <div class="swatch" style="background:#D5DBE5;"></div>
+        <div class="swatch" style="background:#C9E8D8;"></div>
+        <div class="swatch" style="background:#D8E4CF;"></div>
+        <div class="color-divider" style="background:#5C4A1B20;"></div>
+        <!-- Brights -->
+        <div class="swatch" style="background:#FBBF24;"></div>
+        <div class="swatch" style="background:#FB923C;"></div>
+        <div class="swatch" style="background:#F87171;"></div>
+        <div class="swatch" style="background:#EC4899;"></div>
+        <div class="swatch" style="background:#8B5CF6;"></div>
+        <div class="swatch" style="background:#38BDF8;"></div>
+        <div class="swatch" style="background:#34D399;"></div>
+        <div class="swatch" style="background:#A3E635;"></div>
+        <div class="color-divider" style="background:#5C4A1B20;"></div>
+        <!-- Earth -->
+        <div class="swatch" style="background:#C4A67A;"></div>
+        <div class="swatch" style="background:#C2784E;"></div>
+        <div class="swatch" style="background:#A85A42;"></div>
+        <div class="swatch" style="background:#6B7F4A;"></div>
+        <div class="swatch" style="background:#4D7C62;"></div>
+        <div class="swatch" style="background:#7A6E63;"></div>
+        <div class="color-divider" style="background:#5C4A1B20;"></div>
+        <!-- Deep -->
+        <div class="swatch" style="background:#B56576;"></div>
+        <div class="swatch" style="background:#8E5060;"></div>
+        <div class="swatch" style="background:#6D4B73;"></div>
+        <div class="swatch" style="background:#3D7D7C;"></div>
+        <div class="swatch" style="background:#526878;"></div>
+        <div class="swatch" style="background:#4A4543;"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- PHONE SCREENSHOT 3: Dark Mode Grid          -->
+<!-- ════════════════════════════════════════════ -->
+<div class="phone-wrap">
+  <div class="asset-label">Phone Screenshot 3 — Dark Mode</div>
+  <div class="phone" id="phone-3">
+    <div class="screen dark" style="background: #1A1A1A;">
+      <!-- Status Bar -->
+      <div class="status-bar">
+        <span class="time">9:41</span>
+        <div class="icons">
+          <div class="signal">
+            <span style="height:4px"></span><span style="height:6px"></span><span style="height:8px"></span><span style="height:11px"></span>
+          </div>
+          <div class="battery"><div style="position:absolute;left:2px;top:2px;right:3px;bottom:2px;border-radius:1px;background:#EDEBE8;"></div></div>
+        </div>
+      </div>
+
+      <!-- Search Row -->
+      <div class="search-row">
+        <div class="search-bar">
+          <span class="ms search-icon">search</span>
+          <span class="placeholder">Search notes...</span>
+        </div>
+        <div class="view-toggle">
+          <span class="ms" style="font-size:24px;">menu</span>
+        </div>
+      </div>
+
+      <div class="notes-content">
+        <div class="masonry">
+          <div class="masonry-col">
+            <div class="note-card" style="background:#B56576; border-color: #FFFFFF18;">
+              <div class="card-title" style="color:#FFFFFF;">Daily Journal</div>
+              <div class="card-preview" style="color:#FFFFFF;">Today was productive.<br>Finished the app design.<br>Need to prep for demo.</div>
+              <div class="card-time" style="color:#FFFFFF;">Just now</div>
+            </div>
+            <div class="note-card default">
+              <div class="card-title">Grocery Run</div>
+              <div class="card-preview">Coffee beans<br>Oat milk<br>Bananas, berries</div>
+              <div class="card-time">4h ago</div>
+            </div>
+            <div class="note-card" style="background:#8B5CF6; border-color: #FFFFFF18;">
+              <div class="card-title" style="color:#FFFFFF;">Gift Ideas</div>
+              <div class="card-preview" style="color:#FFFFFF;">Mom: garden tools<br>Dad: new book<br>Sis: art supplies</div>
+              <div class="card-time" style="color:#FFFFFF;">3d ago</div>
+            </div>
+            <div class="note-card" style="background:#C9E8D8; border-color: #1E4D3518;">
+              <div class="card-title" style="color:#1E4D35;">Weekend Plans</div>
+              <div class="card-preview" style="color:#1E4D35;">Hike at sunrise<br>Farmers market<br>Cook dinner for friends</div>
+              <div class="card-time" style="color:#1E4D35;">5d ago</div>
+            </div>
+          </div>
+          <div class="masonry-col">
+            <div class="note-card" style="background:#A85A42; border-color: #FFFFFF18;">
+              <div class="card-title" style="color:#FFFFFF;">Passwords</div>
+              <div class="card-preview" style="color:#FFFFFF;">Remember to update<br>all passwords this<br>month!</div>
+              <div class="card-time" style="color:#FFFFFF;">1h ago</div>
+            </div>
+            <div class="note-card" style="background:#FBBF24; border-color: #5C4A1B18;">
+              <div class="card-title" style="color:#5C4A1B;">Quotes</div>
+              <div class="card-preview" style="color:#5C4A1B;">"The best time to plant a tree was 20 years ago. The second best time is now."</div>
+              <div class="card-time" style="color:#5C4A1B;">6h ago</div>
+            </div>
+            <div class="note-card" style="background:#4D7C62; border-color: #FFFFFF18;">
+              <div class="card-title" style="color:#FFFFFF;">App Features</div>
+              <div class="card-preview" style="color:#FFFFFF;">Home screen widget<br>Color customization<br>Pin important notes<br>Search &amp; filter</div>
+              <div class="card-time" style="color:#FFFFFF;">1d ago</div>
+            </div>
+            <div class="note-card default">
+              <div class="card-title">Reminders</div>
+              <div class="card-preview">Dentist on Thursday<br>Pay electricity bill</div>
+              <div class="card-time">6d ago</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FAB -->
+      <div class="fab"><span class="ms">add</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- PHONE SCREENSHOT 4: Home Screen Widget      -->
+<!-- ════════════════════════════════════════════ -->
+<div class="phone-wrap">
+  <div class="asset-label">Phone Screenshot 4 — Home Screen Widget</div>
+  <div class="phone" id="phone-4">
+    <div class="screen widget-wallpaper" style="overflow: hidden;">
+      <!-- Status Bar -->
+      <div class="status-bar" style="background: transparent;">
+        <span class="time" style="color:rgba(255,255,255,0.9);">9:41</span>
+        <div class="icons">
+          <div class="signal">
+            <span style="height:4px;background:rgba(255,255,255,0.9)"></span><span style="height:6px;background:rgba(255,255,255,0.9)"></span><span style="height:8px;background:rgba(255,255,255,0.9)"></span><span style="height:11px;background:rgba(255,255,255,0.9)"></span>
+          </div>
+          <div class="battery" style="border-color:rgba(255,255,255,0.9);"><div style="position:absolute;left:2px;top:2px;right:3px;bottom:2px;border-radius:1px;background:rgba(255,255,255,0.9);"></div></div>
+        </div>
+      </div>
+
+      <!-- Clock -->
+      <div style="text-align:center; padding: 40px 0 24px;">
+        <div style="font-size:64px; font-weight:300; color:rgba(255,255,255,0.95); letter-spacing:-2px; line-height:1;">9:41</div>
+        <div style="font-size:15px; color:rgba(255,255,255,0.5); margin-top:4px;">Wednesday, June 18</div>
+      </div>
+
+      <!-- Widgets -->
+      <div class="widget-area">
+        <div class="widget-card" style="background:#FDF6B2;">
+          <div class="widget-label" style="color:#5C4A1B;">Sticky Note</div>
+          <div class="widget-title" style="color:#5C4A1B;">Project Ideas</div>
+          <div class="widget-line" style="color:#5C4A1B;">Build a habit tracker app</div>
+          <div class="widget-line" style="color:#5C4A1B;">Weather dashboard</div>
+          <div class="widget-line" style="color:#5C4A1B;">Recipe organizer with AI</div>
+          <div class="widget-time" style="color:#5C4A1B;">2h ago</div>
+        </div>
+        <div class="widget-card" style="background:#DDD2EE;">
+          <div class="widget-label" style="color:#3E2A5C;">Sticky Note</div>
+          <div class="widget-title" style="color:#3E2A5C;">Meeting Notes</div>
+          <div class="widget-line" style="color:#3E2A5C;">Discuss Q3 roadmap</div>
+          <div class="widget-line" style="color:#3E2A5C;">Review design mockups</div>
+          <div class="widget-time" style="color:#3E2A5C;">30m ago</div>
+        </div>
+        <div class="widget-card" style="background:#FB923C;">
+          <div class="widget-label" style="color:#FFFFFF;">Sticky Note</div>
+          <div class="widget-title" style="color:#FFFFFF;">Workout Plan</div>
+          <div class="widget-line" style="color:#FFFFFF;">Mon: Upper body</div>
+          <div class="widget-line" style="color:#FFFFFF;">Tue: Cardio 30min</div>
+          <div class="widget-time" style="color:#FFFFFF;">1d ago</div>
+        </div>
+      </div>
+
+      <!-- Dock -->
+      <div class="home-dock">
+        <div class="dock-icon" style="background:rgba(255,255,255,0.1); backdrop-filter:blur(10px);">
+          <span class="ms" style="color:rgba(255,255,255,0.8);">call</span>
+        </div>
+        <div class="dock-icon" style="background:rgba(255,255,255,0.1); backdrop-filter:blur(10px);">
+          <span class="ms" style="color:rgba(255,255,255,0.8);">chat</span>
+        </div>
+        <div class="dock-icon" style="background:#F59E0B; box-shadow: 0 4px 20px rgba(245,158,11,0.4);">
+          <span class="ms" style="color:#fff;">sticky_note_2</span>
+        </div>
+        <div class="dock-icon" style="background:rgba(255,255,255,0.1); backdrop-filter:blur(10px);">
+          <span class="ms" style="color:rgba(255,255,255,0.8);">photo_camera</span>
+        </div>
+        <div class="dock-icon" style="background:rgba(255,255,255,0.1); backdrop-filter:blur(10px);">
+          <span class="ms" style="color:rgba(255,255,255,0.8);">settings</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- 7-inch TABLET SCREENSHOT 1: Light Mode      -->
+<!-- ════════════════════════════════════════════ -->
+<div class="tablet-wrap">
+  <div class="asset-label">7-inch Tablet — Light Mode</div>
+  <div class="tablet-7" id="tablet-7-1">
+    <div class="screen light" style="background: #FFFFFF;">
+      <div class="status-bar">
+        <span class="time">9:41</span>
+        <div class="icons">
+          <div class="signal">
+            <span style="height:4px"></span><span style="height:6px"></span><span style="height:8px"></span><span style="height:11px"></span>
+          </div>
+          <div class="battery"><div style="position:absolute;left:2px;top:2px;right:3px;bottom:2px;border-radius:1px;background:#1C1917;"></div></div>
+        </div>
+      </div>
+      <div class="search-row">
+        <div class="search-bar">
+          <span class="ms search-icon">search</span>
+          <span class="placeholder">Search notes...</span>
+        </div>
+        <div class="view-toggle"><span class="ms" style="font-size:24px;">menu</span></div>
+      </div>
+      <div class="notes-content">
+        <div style="padding: 0 24px;"><div class="section-header">Pinned</div></div>
+        <div class="masonry">
+          <div class="masonry-col">
+            <div class="note-card" style="background:#FDF6B2; border-color: #5C4A1B18;">
+              <span class="ms ms-fill pin-icon" style="color:#5C4A1B;">push_pin</span>
+              <div class="card-title" style="color:#5C4A1B;">Project Ideas</div>
+              <div class="card-preview" style="color:#5C4A1B;">Build a habit tracker app<br>Weather dashboard<br>Recipe organizer with AI<br>Expense splitter for groups</div>
+              <div class="card-time" style="color:#5C4A1B;">2h ago</div>
+            </div>
+            <div class="note-card" style="background:#C9E8D8; border-color: #1E4D3518;">
+              <div class="card-title" style="color:#1E4D35;">Shopping List</div>
+              <div class="card-preview" style="color:#1E4D35;">Milk, eggs, bread<br>Avocados, tomatoes<br>Pasta sauce, olive oil</div>
+              <div class="card-time" style="color:#1E4D35;">5h ago</div>
+            </div>
+            <div class="note-card" style="background:#FB923C; border-color: #FFFFFF18;">
+              <div class="card-title" style="color:#FFFFFF;">Workout Plan</div>
+              <div class="card-preview" style="color:#FFFFFF;">Mon: Upper body<br>Tue: Cardio 30min<br>Wed: Lower body<br>Thu: Rest day<br>Fri: Full body</div>
+              <div class="card-time" style="color:#FFFFFF;">1d ago</div>
+            </div>
+          </div>
+          <div class="masonry-col">
+            <div class="note-card" style="background:#DDD2EE; border-color: #3E2A5C18;">
+              <span class="ms ms-fill pin-icon" style="color:#3E2A5C;">push_pin</span>
+              <div class="card-title" style="color:#3E2A5C;">Meeting Notes</div>
+              <div class="card-preview" style="color:#3E2A5C;">Discuss Q3 roadmap<br>Review design mockups<br>Action items for team</div>
+              <div class="card-time" style="color:#3E2A5C;">30m ago</div>
+            </div>
+            <div class="note-card" style="background:#F0D5CF; border-color: #6B353018;">
+              <div class="card-title" style="color:#6B3530;">Book List</div>
+              <div class="card-preview" style="color:#6B3530;">Atomic Habits<br>The Psychology of Money<br>Deep Work by Cal Newport<br>Show Your Work</div>
+              <div class="card-time" style="color:#6B3530;">3h ago</div>
+            </div>
+            <div class="note-card" style="background:#38BDF8; border-color: #FFFFFF18;">
+              <div class="card-title" style="color:#FFFFFF;">Travel Plans</div>
+              <div class="card-preview" style="color:#FFFFFF;">Tokyo — April<br>Flight: check prices<br>Hotel near Shinjuku<br>Book rail pass</div>
+              <div class="card-time" style="color:#FFFFFF;">2d ago</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="fab"><span class="ms">add</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- 7-inch TABLET SCREENSHOT 2: Dark Mode       -->
+<!-- ════════════════════════════════════════════ -->
+<div class="tablet-wrap">
+  <div class="asset-label">7-inch Tablet — Dark Mode</div>
+  <div class="tablet-7" id="tablet-7-2">
+    <div class="screen dark" style="background: #1A1A1A;">
+      <div class="status-bar">
+        <span class="time">9:41</span>
+        <div class="icons">
+          <div class="signal">
+            <span style="height:4px"></span><span style="height:6px"></span><span style="height:8px"></span><span style="height:11px"></span>
+          </div>
+          <div class="battery"><div style="position:absolute;left:2px;top:2px;right:3px;bottom:2px;border-radius:1px;background:#EDEBE8;"></div></div>
+        </div>
+      </div>
+      <div class="search-row">
+        <div class="search-bar">
+          <span class="ms search-icon">search</span>
+          <span class="placeholder">Search notes...</span>
+        </div>
+        <div class="view-toggle"><span class="ms" style="font-size:24px;">menu</span></div>
+      </div>
+      <div class="notes-content">
+        <div class="masonry">
+          <div class="masonry-col">
+            <div class="note-card" style="background:#B56576; border-color: #FFFFFF18;">
+              <div class="card-title" style="color:#FFFFFF;">Daily Journal</div>
+              <div class="card-preview" style="color:#FFFFFF;">Today was productive.<br>Finished the app design.<br>Need to prep for demo.</div>
+              <div class="card-time" style="color:#FFFFFF;">Just now</div>
+            </div>
+            <div class="note-card default">
+              <div class="card-title">Grocery Run</div>
+              <div class="card-preview">Coffee beans, oat milk<br>Bananas, berries<br>Sourdough bread</div>
+              <div class="card-time">4h ago</div>
+            </div>
+            <div class="note-card" style="background:#8B5CF6; border-color: #FFFFFF18;">
+              <div class="card-title" style="color:#FFFFFF;">Gift Ideas</div>
+              <div class="card-preview" style="color:#FFFFFF;">Mom: garden tools<br>Dad: new book<br>Sis: art supplies</div>
+              <div class="card-time" style="color:#FFFFFF;">3d ago</div>
+            </div>
+          </div>
+          <div class="masonry-col">
+            <div class="note-card" style="background:#A85A42; border-color: #FFFFFF18;">
+              <div class="card-title" style="color:#FFFFFF;">Passwords</div>
+              <div class="card-preview" style="color:#FFFFFF;">Remember to update<br>all passwords this<br>month!</div>
+              <div class="card-time" style="color:#FFFFFF;">1h ago</div>
+            </div>
+            <div class="note-card" style="background:#FBBF24; border-color: #5C4A1B18;">
+              <div class="card-title" style="color:#5C4A1B;">Quotes</div>
+              <div class="card-preview" style="color:#5C4A1B;">"The best time to plant a tree was 20 years ago. The second best time is now."</div>
+              <div class="card-time" style="color:#5C4A1B;">6h ago</div>
+            </div>
+            <div class="note-card" style="background:#4D7C62; border-color: #FFFFFF18;">
+              <div class="card-title" style="color:#FFFFFF;">App Features</div>
+              <div class="card-preview" style="color:#FFFFFF;">Home screen widget<br>Color customization<br>Pin important notes<br>Search &amp; filter</div>
+              <div class="card-time" style="color:#FFFFFF;">1d ago</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="fab"><span class="ms">add</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- 10-inch TABLET SCREENSHOT 1: Light Mode     -->
+<!-- ════════════════════════════════════════════ -->
+<div class="tablet-wrap">
+  <div class="asset-label">10-inch Tablet — Light Mode</div>
+  <div class="tablet-10" id="tablet-10-1">
+    <div class="screen light" style="background: #FFFFFF;">
+      <div class="status-bar" style="padding: 14px 36px 0;">
+        <span class="time">9:41</span>
+        <div class="icons">
+          <div class="signal">
+            <span style="height:4px"></span><span style="height:6px"></span><span style="height:8px"></span><span style="height:11px"></span>
+          </div>
+          <div class="battery"><div style="position:absolute;left:2px;top:2px;right:3px;bottom:2px;border-radius:1px;background:#1C1917;"></div></div>
+        </div>
+      </div>
+      <div class="search-row" style="padding: 4px 32px 16px;">
+        <div class="search-bar">
+          <span class="ms search-icon">search</span>
+          <span class="placeholder">Search notes...</span>
+        </div>
+        <div class="view-toggle"><span class="ms" style="font-size:24px;">menu</span></div>
+      </div>
+      <div class="notes-content">
+        <div style="padding: 0 32px;"><div class="section-header" style="padding-left: 4px;">Pinned</div></div>
+        <div class="masonry" style="padding: 0 32px; gap: 16px;">
+          <div class="masonry-col" style="gap: 16px;">
+            <div class="note-card" style="background:#FDF6B2; border-color: #5C4A1B18; padding:20px;">
+              <span class="ms ms-fill pin-icon" style="color:#5C4A1B;">push_pin</span>
+              <div class="card-title" style="color:#5C4A1B; font-size:18px;">Project Ideas</div>
+              <div class="card-preview" style="color:#5C4A1B; font-size:15px; line-height:22px;">Build a habit tracker app<br>Weather dashboard<br>Recipe organizer with AI<br>Expense splitter for groups</div>
+              <div class="card-time" style="color:#5C4A1B;">2h ago</div>
+            </div>
+            <div class="note-card" style="background:#C9E8D8; border-color: #1E4D3518; padding:20px;">
+              <div class="card-title" style="color:#1E4D35; font-size:18px;">Shopping List</div>
+              <div class="card-preview" style="color:#1E4D35; font-size:15px; line-height:22px;">Milk, eggs, bread<br>Avocados, tomatoes<br>Pasta sauce, olive oil</div>
+              <div class="card-time" style="color:#1E4D35;">5h ago</div>
+            </div>
+            <div class="note-card" style="background:#FB923C; border-color: #FFFFFF18; padding:20px;">
+              <div class="card-title" style="color:#FFFFFF; font-size:18px;">Workout Plan</div>
+              <div class="card-preview" style="color:#FFFFFF; font-size:15px; line-height:22px;">Mon: Upper body<br>Tue: Cardio 30min<br>Wed: Lower body<br>Thu: Rest day<br>Fri: Full body</div>
+              <div class="card-time" style="color:#FFFFFF;">1d ago</div>
+            </div>
+            <div class="note-card" style="background:#B56576; border-color: #FFFFFF18; padding:20px;">
+              <div class="card-title" style="color:#FFFFFF; font-size:18px;">Daily Journal</div>
+              <div class="card-preview" style="color:#FFFFFF; font-size:15px; line-height:22px;">Today was productive.<br>Finished the app design.<br>Need to prep for Friday.</div>
+              <div class="card-time" style="color:#FFFFFF;">3d ago</div>
+            </div>
+          </div>
+          <div class="masonry-col" style="gap: 16px;">
+            <div class="note-card" style="background:#DDD2EE; border-color: #3E2A5C18; padding:20px;">
+              <span class="ms ms-fill pin-icon" style="color:#3E2A5C;">push_pin</span>
+              <div class="card-title" style="color:#3E2A5C; font-size:18px;">Meeting Notes</div>
+              <div class="card-preview" style="color:#3E2A5C; font-size:15px; line-height:22px;">Discuss Q3 roadmap<br>Review design mockups<br>Action items for team</div>
+              <div class="card-time" style="color:#3E2A5C;">30m ago</div>
+            </div>
+            <div class="note-card" style="background:#F0D5CF; border-color: #6B353018; padding:20px;">
+              <div class="card-title" style="color:#6B3530; font-size:18px;">Book List</div>
+              <div class="card-preview" style="color:#6B3530; font-size:15px; line-height:22px;">Atomic Habits<br>The Psychology of Money<br>Deep Work by Cal Newport<br>Show Your Work</div>
+              <div class="card-time" style="color:#6B3530;">3h ago</div>
+            </div>
+            <div class="note-card" style="background:#38BDF8; border-color: #FFFFFF18; padding:20px;">
+              <div class="card-title" style="color:#FFFFFF; font-size:18px;">Travel Plans</div>
+              <div class="card-preview" style="color:#FFFFFF; font-size:15px; line-height:22px;">Tokyo — April<br>Flight: check prices<br>Hotel near Shinjuku<br>Book rail pass</div>
+              <div class="card-time" style="color:#FFFFFF;">2d ago</div>
+            </div>
+            <div class="note-card default" style="padding:20px;">
+              <div class="card-title" style="font-size:18px;">Quick Notes</div>
+              <div class="card-preview" style="font-size:15px; line-height:22px;">Call dentist tomorrow<br>Renew subscription<br>Water the plants</div>
+              <div class="card-time">4d ago</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="fab" style="bottom:40px; right:32px;"><span class="ms">add</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- 10-inch TABLET SCREENSHOT 2: Dark Mode      -->
+<!-- ════════════════════════════════════════════ -->
+<div class="tablet-wrap">
+  <div class="asset-label">10-inch Tablet — Dark Mode</div>
+  <div class="tablet-10" id="tablet-10-2">
+    <div class="screen dark" style="background: #1A1A1A;">
+      <div class="status-bar" style="padding: 14px 36px 0;">
+        <span class="time">9:41</span>
+        <div class="icons">
+          <div class="signal">
+            <span style="height:4px"></span><span style="height:6px"></span><span style="height:8px"></span><span style="height:11px"></span>
+          </div>
+          <div class="battery"><div style="position:absolute;left:2px;top:2px;right:3px;bottom:2px;border-radius:1px;background:#EDEBE8;"></div></div>
+        </div>
+      </div>
+      <div class="search-row" style="padding: 4px 32px 16px;">
+        <div class="search-bar">
+          <span class="ms search-icon">search</span>
+          <span class="placeholder">Search notes...</span>
+        </div>
+        <div class="view-toggle"><span class="ms" style="font-size:24px;">menu</span></div>
+      </div>
+      <div class="notes-content">
+        <div class="masonry" style="padding: 0 32px; gap: 16px;">
+          <div class="masonry-col" style="gap: 16px;">
+            <div class="note-card" style="background:#B56576; border-color: #FFFFFF18; padding:20px;">
+              <div class="card-title" style="color:#FFFFFF; font-size:18px;">Daily Journal</div>
+              <div class="card-preview" style="color:#FFFFFF; font-size:15px; line-height:22px;">Today was productive.<br>Finished the app design.<br>Need to prep for demo.</div>
+              <div class="card-time" style="color:#FFFFFF;">Just now</div>
+            </div>
+            <div class="note-card default" style="padding:20px;">
+              <div class="card-title" style="font-size:18px;">Grocery Run</div>
+              <div class="card-preview" style="font-size:15px; line-height:22px;">Coffee beans, oat milk<br>Bananas, berries<br>Sourdough bread</div>
+              <div class="card-time">4h ago</div>
+            </div>
+            <div class="note-card" style="background:#8B5CF6; border-color: #FFFFFF18; padding:20px;">
+              <div class="card-title" style="color:#FFFFFF; font-size:18px;">Gift Ideas</div>
+              <div class="card-preview" style="color:#FFFFFF; font-size:15px; line-height:22px;">Mom: garden tools<br>Dad: new book<br>Sis: art supplies</div>
+              <div class="card-time" style="color:#FFFFFF;">3d ago</div>
+            </div>
+            <div class="note-card" style="background:#C9E8D8; border-color: #1E4D3518; padding:20px;">
+              <div class="card-title" style="color:#1E4D35; font-size:18px;">Weekend Plans</div>
+              <div class="card-preview" style="color:#1E4D35; font-size:15px; line-height:22px;">Hike at sunrise<br>Farmers market<br>Cook dinner for friends</div>
+              <div class="card-time" style="color:#1E4D35;">5d ago</div>
+            </div>
+          </div>
+          <div class="masonry-col" style="gap: 16px;">
+            <div class="note-card" style="background:#A85A42; border-color: #FFFFFF18; padding:20px;">
+              <div class="card-title" style="color:#FFFFFF; font-size:18px;">Passwords</div>
+              <div class="card-preview" style="color:#FFFFFF; font-size:15px; line-height:22px;">Remember to update<br>all passwords this<br>month!</div>
+              <div class="card-time" style="color:#FFFFFF;">1h ago</div>
+            </div>
+            <div class="note-card" style="background:#FBBF24; border-color: #5C4A1B18; padding:20px;">
+              <div class="card-title" style="color:#5C4A1B; font-size:18px;">Quotes</div>
+              <div class="card-preview" style="color:#5C4A1B; font-size:15px; line-height:22px;">"The best time to plant a tree was 20 years ago. The second best time is now."</div>
+              <div class="card-time" style="color:#5C4A1B;">6h ago</div>
+            </div>
+            <div class="note-card" style="background:#4D7C62; border-color: #FFFFFF18; padding:20px;">
+              <div class="card-title" style="color:#FFFFFF; font-size:18px;">App Features</div>
+              <div class="card-preview" style="color:#FFFFFF; font-size:15px; line-height:22px;">Home screen widget<br>Color customization<br>Pin important notes<br>Search &amp; filter</div>
+              <div class="card-time" style="color:#FFFFFF;">1d ago</div>
+            </div>
+            <div class="note-card default" style="padding:20px;">
+              <div class="card-title" style="font-size:18px;">Reminders</div>
+              <div class="card-preview" style="font-size:15px; line-height:22px;">Dentist on Thursday<br>Pay electricity bill</div>
+              <div class="card-time">6d ago</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="fab" style="bottom:40px; right:32px;"><span class="ms">add</span></div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
