@@ -18,16 +18,11 @@ export default function ViewToggle({ mode, onToggle }: ViewToggleProps) {
         onToggle();
       }}
       hitSlop={8}
-      style={{
-        borderWidth: 1,
-        borderColor: colors.border.DEFAULT,
-        backgroundColor: colors.card.muted,
-      }}
-      className="w-9 h-9 rounded-lg items-center justify-center"
+      className="w-9 h-9 items-center justify-center"
     >
       <Ionicons
-        name={mode === "grid" ? "list-outline" : "grid-outline"}
-        size={18}
+        name={mode === "grid" ? "menu-outline" : "grid-outline"}
+        size={24}
         color={colors.ink.secondary}
       />
     </Pressable>

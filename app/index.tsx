@@ -142,21 +142,21 @@ export default function NoteList() {
 
   return (
     <>
-      <Stack.Screen
-        options={{
-          title: "Sticky",
-          headerRight: () => (
+      <Stack.Screen options={{ headerShown: false }} />
+      <View style={{ backgroundColor: colors.paper }} className="flex-1 pt-14">
+        <View className="flex-row items-center px-4 mb-3">
+          <View className="flex-1">
+            <SearchBar value={searchQuery} onChangeText={handleSearch} />
+          </View>
+          <View className="ml-2">
             <ViewToggle
               mode={viewMode}
               onToggle={() =>
                 setViewMode((m) => (m === "grid" ? "list" : "grid"))
               }
             />
-          ),
-        }}
-      />
-      <View style={{ backgroundColor: colors.paper }} className="flex-1">
-        <SearchBar value={searchQuery} onChangeText={handleSearch} />
+          </View>
+        </View>
 
         {notes.length === 0 ? (
           <View className="flex-1 items-center justify-center px-10">

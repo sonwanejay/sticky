@@ -68,7 +68,7 @@ export function getColorConfig(
 } {
   if (!hex)
     return {
-      bg: colors.card.muted,
+      bg: colors.card.DEFAULT,
       textColor: colors.ink.DEFAULT,
       secondaryTextColor: colors.ink.secondary,
       pinColor: colors.ink.muted,

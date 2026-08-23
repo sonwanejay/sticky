@@ -21,8 +21,9 @@ export default function SearchBar({
         backgroundColor: colors.card.muted,
         borderWidth: 1,
         borderColor: colors.border.DEFAULT,
+        borderRadius: 9999,
       }}
-      className="flex-row items-center rounded-xl px-4 py-3 mx-4 mt-2 mb-4"
+      className="flex-row items-center px-4 py-2"
     >
       <Ionicons name="search-outline" size={18} color={colors.ink.muted} />
       <TextInput
