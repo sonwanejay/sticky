@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "sticky",
+    "name": "Sticky",
     "slug": "sticky",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -16,7 +16,7 @@
       "icon": "./assets/images/icon.png",
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
-      "package": "com.anonymous.sticky"
+      "package": "com.jaysonwane.sticky"
     },
     "web": {
       "output": "static",
@@ -60,6 +60,12 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "7f6a39a2-1c61-405e-8476-fc9b757ad054"
+      }
     }
   }
 }
